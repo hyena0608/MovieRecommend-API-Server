@@ -19,4 +19,5 @@ public class MovieActor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "actor_id")
     private Actor actor;
+
 }

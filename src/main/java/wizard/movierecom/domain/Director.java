@@ -1,11 +1,15 @@
 package wizard.movierecom.domain;
 
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "director")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Director {
 
     @Id @GeneratedValue
@@ -17,4 +21,6 @@ public class Director {
 
     @OneToMany(mappedBy = "director", cascade = CascadeType.ALL)
     private List<MovieDirector> movieDirectors;
+
+
 }
