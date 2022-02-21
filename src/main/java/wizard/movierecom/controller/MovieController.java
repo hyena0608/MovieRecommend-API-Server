@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
-import wizard.movierecom.factory.DataFactory;
 import wizard.movierecom.repository.MovieRepository;
 import wizard.movierecom.domain.Movie;
 import wizard.movierecom.repository.MovieSearch;
