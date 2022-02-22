@@ -19,7 +19,7 @@ public class MovieRepository {
      * 영화 넣기
      */
     @Transactional
-    public void insertMovie(Movie movie) {
+    public void save(Movie movie) {
         em.persist(movie);
     }
 
@@ -27,8 +27,15 @@ public class MovieRepository {
      * 영화 찾기
      */
     public Movie findOneById(Long id) {
-        Movie findMovie = em.find(Movie.class, id);
-        return findMovie;
+        return em.find(Movie.class, id);
+    }
+
+    public List<Movie> findByName(String title) {
+        List<Movie> findMovieList = em.createQuery(
+                        "select m from Movie m where m.title = :title", Movie.class
+                ).setParameter("title", title)
+                .getResultList();
+        return findMovieList;
     }
 
     public List<Movie> findAllByString(MovieSearch movieSearch) {
@@ -52,7 +59,7 @@ public class MovieRepository {
 
         List<Movie> resultList = em.createQuery(
                         jpql, Movie.class
-                ).setParameter("title", "%"+movieSearch.getTitle()+"%")
+                ).setParameter("title", "%" + movieSearch.getTitle() + "%")
                 .setParameter("content", movieSearch.getContent())
                 .getResultList();
 

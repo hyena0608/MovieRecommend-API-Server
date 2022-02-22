@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "movie")
 @Getter
-@AllArgsConstructor
 public class Movie {
 
     @Id
@@ -54,7 +53,38 @@ public class Movie {
         this.vote_count = vote_count;
     }
 
+    public Movie(String title, String overview, String release_date, int runtime, float vote_average, int vote_count, List<MovieGenre> movieGenres) {
+        this.title = title;
+        this.overview = overview;
+        this.release_date = release_date;
+        this.runtime = runtime;
+        this.vote_average = vote_average;
+        this.vote_count = vote_count;
+        this.movieGenres = movieGenres;
+    }
+
     public Movie() {
 
     }
+
+    /**
+     * 연관관계 메서드
+     *
+     * Movie-Genre
+     */
+    public void addMovieGenres(MovieGenre movieGenre) {
+        movieGenres.add(movieGenre);
+        movieGenre.setMovie(this);
+    }
+
+    /**
+     * 생성 메서드
+     */
+    public static Movie createMoive(Movie movie, List<MovieGenre> movieGenres) {
+        for (MovieGenre movieGenre : movieGenres) {
+            movie.addMovieGenres(movieGenre);
+        }
+        return movie;
+    }
+
 }

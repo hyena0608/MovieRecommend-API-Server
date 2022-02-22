@@ -21,7 +21,7 @@ public class MovieController {
     @PostMapping("/api")
     public void createMovie(@RequestBody Movie movie) {
         Movie movie1 = new Movie(movie.getTitle(), movie.getRelease_date(), movie.getCountry());
-        movieRepository.insertMovie(movie1);
+        movieRepository.save(movie1);
 
     }
 
