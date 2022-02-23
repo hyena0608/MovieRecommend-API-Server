@@ -4,24 +4,30 @@
 
 - [x]  2022/02/17
     - 테이블 생성 오류
-    
+        - application 다시 보기
+        - build.gradle 다시 보기
+    - 매핑이 이상한가?
+        - X
+    - jdk 버전이 이상한가?
+        - X
 - [x]  2022/02/18
-    - 새로 DATA JPA, LOMBOK, HIBERNATE, SPRING WEB SERVICE, H2 DRIVER, VALIDATION, THYMELEAF
+    - 새로운 프로젝트 생성
+        - SPRING DATA JPA, LOMBOK, HIBERNATE, SPRING WEB SERVICE, H2 DRIVER, VALIDATION, THYMELEAF
     - domain, repository, service, controller 패키지 생성
     - domain -엔티티 클래스 생성
-        - 테이블 운 프로젝트 생성
-        - SPRING자동 매핑 `spirng.jpa.gibernate.ddl-auto: create`
+        - 테이블 자동 매핑 `spirng.jpa.gibernate.ddl-auto: create`
+        - 영화, 배우, 감독,
     - repository - Moive JPA로 persist해보기
     - controller - Post Method 호출
-    
 - [x]  2022/02/19
-    - 영화 정보
-    
+    - 영화
+        - repository
+            - 영화 (제목, 내용) 검색 기능
 - [x]  2022/02/20
     - Tag 엔티티 추가
     - 영화 정보 API 검색
-        - API로 가져와서 DB에 넣어주기    
-        
+        - API로 가져와서 DB에 넣어주기
+        - DataFactory
 - [x]  2022/02/21
     - Tag 엔티티 → Genre 엔티티 변경
     - 다:다 관계로 인해 MovieGenre 엔티티 생성
@@ -29,7 +35,6 @@
         - POST Method로 부를 시 Moive 테이블 잘 생성
         - 오류 → View를 안만듬
     - 배우 데이터 없어서 계획 변경 예정
-
 - [x]  2022/02/22
     - 연관 관계 메서드
         - 사용한 이유?
@@ -39,3 +44,7 @@
     - Movie, Genre 중복 방지
         - validateDuplicate 메서드
     - Movie, Genre 생성, 검색
+- [ ]  2022/02/23
+    - [양방향 연관관계의 주의점](https://www.notion.so/79556ce77a9e43898e088c13dc3b0ea3)
+    - DataFactoryController
+        - `genreService.save(genre)`가 중복 방지 메서드로 인해 실패할 경우 `catch`로 가기 때문에 `moiveService.save(movie)`가 실행되지 않는다... try-catch 부분을 다시 생각해 봐야 함.
