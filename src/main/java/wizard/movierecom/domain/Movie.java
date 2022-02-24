@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,8 +36,8 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieActor> movieActors;
 
-    @OneToMany(mappedBy = "movie")
-    private List<MovieGenre> movieGenres;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<MovieGenre> movieGenres = new ArrayList<>();
 
     public Movie(String title, String release_date, String country) {
         this.title = title;
@@ -80,11 +81,12 @@ public class Movie {
     /**
      * 생성 메서드
      */
-    public static Movie createMoive(Movie movie, List<MovieGenre> movieGenres) {
+    public static Movie createMovie(Movie movie, List<MovieGenre> movieGenres) {
+        Movie movie1 = new Movie(movie.getTitle(), movie.getOverview(), movie.getRelease_date(), movie.getRuntime(), movie.getVote_average(), movie.getVote_count());
         for (MovieGenre movieGenre : movieGenres) {
-            movie.addMovieGenres(movieGenre);
+            movie1.addMovieGenres(movieGenre);
         }
-        return movie;
+        return movie1;
     }
 
 }

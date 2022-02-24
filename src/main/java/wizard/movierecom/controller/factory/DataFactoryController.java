@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wizard.movierecom.domain.Genre;
 import wizard.movierecom.domain.Movie;
 import wizard.movierecom.domain.MovieGenre;
-import wizard.movierecom.repository.DataFactoryRepository;
 import wizard.movierecom.repository.GenreRepository;
-import wizard.movierecom.repository.MovieRepository;
-import wizard.movierecom.service.DataFactoryService;
 import wizard.movierecom.service.GenreService;
 import wizard.movierecom.service.MovieService;
 
@@ -32,10 +29,8 @@ import static wizard.movierecom.domain.MovieGenre.createMovieGenre;
 public class DataFactoryController {
 
     private final MovieService movieService;
-    private final GenreService genreService;
-
-    private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
+    private final GenreService genreService;
 
     @PostMapping("/api/buildData")
     public String startDB() {
@@ -45,28 +40,43 @@ public class DataFactoryController {
                 String api_url = "https://api.themoviedb.org/3/movie/" + Integer.toString(++cnt) + "?api_key=c491655bb791f450cb71d101f64552cc&language=ko";
                 JSONObject movieJsonObject = getMovieJsonObject(api_url);
 
-                Movie movie = getMovie(movieJsonObject);
-
                 List<MovieGenre> movieGenreList = new ArrayList<>();
                 ArrayList genreArray = (ArrayList) movieJsonObject.get("genres");
                 for (Object o : genreArray) {
-                    JSONObject genreJsonObject = new JSONObject((Map) o);
-                    Genre genre = new Genre(genreJsonObject.get("name").toString());
+                    Genre genre = makeGenre((Map) o);
                     genreService.save(genre);
-                    movieGenreList.add(createMovieGenre(movie, genre));
+                    List<Genre> findGenre = genreRepository.findGenreByName(genre.getName());
+                    collectMovieGenre(movieGenreList, findGenre.get(0));
                 }
-                Movie movie1 = Movie.createMoive(movie, movieGenreList);
+
+                Movie movie = getMovie(movieJsonObject);
+                Movie movie1 = Movie.createMovie(movie, movieGenreList);
+                log.info("movie = " + movie1);
+                log.info("genres = " + movieGenreList.stream().count());
+                log.info("movie_id = " + movie1.getTitle());
+                log.info("cnt = " + cnt);
                 movieService.save(movie1);
 
 
             } catch (Exception e) {
-
+                log.warn("No Movie In this Situation");
             } finally {
-                if (cnt > 5) break;
+                if (cnt > 30) break;
             }
         }
 
         return "ok";
+    }
+
+    private void collectMovieGenre(List<MovieGenre> movieGenreList, Genre findGenre) {
+        MovieGenre movieGenre = createMovieGenre(findGenre);
+        movieGenreList.add(movieGenre);
+    }
+
+    private Genre makeGenre(Map o) {
+        JSONObject genreJsonObject = new JSONObject(o);
+        Genre genre = new Genre(genreJsonObject.get("name").toString());
+        return genre;
     }
 
     private static Movie getMovie(JSONObject jsonObject) {

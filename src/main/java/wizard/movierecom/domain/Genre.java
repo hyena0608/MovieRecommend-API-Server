@@ -16,7 +16,7 @@ public class Genre {
 
     private String name;
 
-    @OneToMany(mappedBy = "genre")
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
     private List<MovieGenre> movieGenres;
 
     public Genre(String name) {

@@ -23,13 +23,12 @@ public class MovieGenre {
 
     }
 
-    public MovieGenre(Movie movie, Genre genre) {
-        this.movie = movie;
+    public MovieGenre(Genre genre) {
         this.genre = genre;
     }
 
-    public static MovieGenre createMovieGenre(Movie movie, Genre genre) {
-        return new MovieGenre(movie, genre);
+    public static MovieGenre createMovieGenre(Genre genre) {
+        return new MovieGenre(genre);
     }
 
     public void setMovie(Movie movie) {

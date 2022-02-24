@@ -1,6 +1,7 @@
 package wizard.movierecom.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wizard.movierecom.domain.Movie;
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class MovieService {
 
     private final MovieRepository movieRepository;

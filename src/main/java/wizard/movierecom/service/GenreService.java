@@ -18,15 +18,20 @@ public class GenreService {
 
     @Transactional
     public Long save(Genre genre) {
-        validateDuplicateGenre(genre);
-        genreRepository.save(genre);
-        return genre.getId();
+        boolean isTrue = validateDuplicateGenre(genre);
+        if (isTrue) {
+            genreRepository.save(genre);
+            return genre.getId();
+        } else {
+            return 0L;
+        }
     }
 
-    private void validateDuplicateGenre(Genre genre) {
+    private boolean validateDuplicateGenre(Genre genre) {
         List<Genre> result = genreRepository.findGenreByName(genre.getName());
         if (!result.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 장르입니다.");
+            return false;
         }
+        return true;
     }
 }
