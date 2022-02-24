@@ -44,7 +44,15 @@
     - Movie, Genre 중복 방지
         - validateDuplicate 메서드
     - Movie, Genre 생성, 검색
-- [ ]  2022/02/23
+- [x]  2022/02/23
     - [양방향 연관관계의 주의점](https://www.notion.so/79556ce77a9e43898e088c13dc3b0ea3)
     - DataFactoryController
         - `genreService.save(genre)`가 중복 방지 메서드로 인해 실패할 경우 `catch`로 가기 때문에 `moiveService.save(movie)`가 실행되지 않는다... try-catch 부분을 다시 생각해 봐야 함.
+- [ ]  2022/02/24
+    - GenreService에 중복 방지 메서드 부분 수정
+        - 중복 있으면 오류? ❌
+        - 중복이면 무시하고 save ❌
+    - `@OneToMany`에 `CascadeType.ALL`을 하지 않아서 Moive에 MovieGenre를 넣어서 생성 메서드를 호출하여도 아무도 일도 일어나지 않음
+    - 1~30 번호의 Movie를 검색은 해도 저장되지 않음
+        - genre부분이 이미 테이블에 등록 돼 있는 Moive를 호출할 시에 검색은 되나 저장이 안됨
+        - genre가 중복되었을 때 저장은 무시하나 마지막까지 실행되도록 수정 요함
