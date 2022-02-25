@@ -15,17 +15,11 @@ public class MovieRepository {
 
     private final EntityManager em;
 
-    /**
-     * 영화 넣기
-     */
     @Transactional
     public void save(Movie movie) {
         em.persist(movie);
     }
 
-    /**
-     * 영화 찾기
-     */
     public Movie findOneById(Long id) {
         return em.find(Movie.class, id);
     }
@@ -65,6 +59,18 @@ public class MovieRepository {
 
         System.out.println("resultList = " + resultList);
         return resultList;
+    }
+
+    public List<Movie> findByGenre(String name) {
+        List<Movie> result = em.createQuery(
+                        "select m " +
+                                " from Movie m" +
+                                " join fetch m.movieGenres mg" +
+                                " where mg.genre.name like :name", Movie.class
+                ).setParameter("name", "%" + name + "%")
+                .getResultList();
+
+        return result;
     }
 
 

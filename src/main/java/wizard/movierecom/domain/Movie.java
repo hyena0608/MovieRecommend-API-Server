@@ -1,8 +1,6 @@
 package wizard.movierecom.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,15 +24,10 @@ public class Movie {
     private float vote_average;
     private int vote_count;
     private String country;
+    private String tagline;
 
-//    @Enumerated(EnumType.STRING)
-//    private MovieLimitAge limitAge;
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    private List<MovieDirector> movieDirectors;
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    private List<MovieActor> movieActors;
+//    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+//    private List<MovieDirector> movieDirectors;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieGenre> movieGenres = new ArrayList<>();
@@ -54,24 +47,12 @@ public class Movie {
         this.vote_count = vote_count;
     }
 
-    public Movie(String title, String overview, String release_date, int runtime, float vote_average, int vote_count, List<MovieGenre> movieGenres) {
-        this.title = title;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.runtime = runtime;
-        this.vote_average = vote_average;
-        this.vote_count = vote_count;
-        this.movieGenres = movieGenres;
-    }
-
     public Movie() {
 
     }
 
     /**
      * 연관관계 메서드
-     *
-     * Movie-Genre
      */
     public void addMovieGenres(MovieGenre movieGenre) {
         movieGenres.add(movieGenre);

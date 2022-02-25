@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wizard.movierecom.domain.Genre;
 import wizard.movierecom.domain.Movie;
 import wizard.movierecom.repository.MovieRepository;
 
@@ -24,7 +25,6 @@ public class MovieService {
         movieRepository.save(movie);
         return movie.getId();
     }
-
 
     private void validateDuplicateMovie(Movie movie) {
         List<Movie> result = movieRepository.findByName(movie.getTitle());

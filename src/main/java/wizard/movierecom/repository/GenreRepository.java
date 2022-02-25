@@ -28,10 +28,6 @@ public class GenreRepository {
                 .getResultList();
     }
 
-    public Genre findById(Long id) {
-        return em.find(Genre.class, id);
-    }
-
 }
 
 

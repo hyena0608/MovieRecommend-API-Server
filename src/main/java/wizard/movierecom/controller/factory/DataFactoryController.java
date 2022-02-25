@@ -45,18 +45,13 @@ public class DataFactoryController {
                 for (Object o : genreArray) {
                     Genre genre = makeGenre((Map) o);
                     genreService.save(genre);
-                    List<Genre> findGenre = genreRepository.findGenreByName(genre.getName());
-                    collectMovieGenre(movieGenreList, findGenre.get(0));
+                    List<Genre> findGenres = genreRepository.findGenreByName(genre.getName());
+                    collectMovieGenre(movieGenreList, findGenres.get(0));
                 }
 
                 Movie movie = getMovie(movieJsonObject);
                 Movie movie1 = Movie.createMovie(movie, movieGenreList);
-                log.info("movie = " + movie1);
-                log.info("genres = " + movieGenreList.stream().count());
-                log.info("movie_id = " + movie1.getTitle());
-                log.info("cnt = " + cnt);
                 movieService.save(movie1);
-
 
             } catch (Exception e) {
                 log.warn("No Movie In this Situation");
@@ -64,9 +59,11 @@ public class DataFactoryController {
                 if (cnt > 30) break;
             }
         }
-
         return "ok";
     }
+
+
+
 
     private void collectMovieGenre(List<MovieGenre> movieGenreList, Genre findGenre) {
         MovieGenre movieGenre = createMovieGenre(findGenre);

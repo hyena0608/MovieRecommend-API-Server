@@ -7,7 +7,6 @@ import wizard.movierecom.domain.Genre;
 import wizard.movierecom.repository.GenreRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
