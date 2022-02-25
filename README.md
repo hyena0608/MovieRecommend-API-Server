@@ -3,68 +3,6 @@
 
 
 - [x]  2022/02/17
-<<<<<<< HEAD
-   - 테이블 생성 오류
-      - application 다시 보기
-      - build.gradle 다시 보기
-   - 매핑이 이상한가?
-      - X
-   - jdk 버전이 이상한가?
-      - X
-- [x]  2022/02/18
-   - 새로운 프로젝트 생성
-      - SPRING DATA JPA, LOMBOK, HIBERNATE, SPRING WEB SERVICE, H2 DRIVER, VALIDATION, THYMELEAF
-   - domain, repository, service, controller 패키지 생성
-   - domain -엔티티 클래스 생성
-      - 테이블 자동 매핑 `spirng.jpa.gibernate.ddl-auto: create`
-      - 영화, 배우, 감독,
-   - repository - Moive JPA로 persist해보기
-   - controller - Post Method 호출
-- [x]  2022/02/19
-   - 영화
-      - repository
-         - 영화 (제목, 내용) 검색 기능
-- [x]  2022/02/20
-   - Tag 엔티티 추가
-   - 영화 정보 API 검색
-      - API로 가져와서 DB에 넣어주기
-      - DataFactory
-- [x]  2022/02/21
-   - Tag 엔티티 → Genre 엔티티 변경
-   - 다:다 관계로 인해 MovieGenre 엔티티 생성
-   - DataFactoryController
-      - POST Method로 부를 시 Moive 테이블 잘 생성
-      - 오류 → View를 안만듬
-   - 배우 데이터 없어서 계획 변경 예정
-- [x]  2022/02/22
-   - 연관 관계 메서드
-      - 사용한 이유?
-         - JPA에서 양방향 연관관계 매핑할 때 객체 관점에서 처리하기 위해서
-            - 연관 관계의 주인쪽에만 저장하지 않고 객체 관점에서 양쪽 방향에 모두 값을 입력해주는 것
-               - 실수 방지 !!!
-   - Movie, Genre 중복 방지
-      - validateDuplicate 메서드
-   - Movie, Genre 생성, 검색
-- [x]  2022/02/23
-   - [양방향 연관관계의 주의점](https://www.notion.so/79556ce77a9e43898e088c13dc3b0ea3)
-   - DataFactoryController
-      - `genreService.save(genre)`가 중복 방지 메서드로 인해 실패할 경우 `catch`로 가기 때문에 `moiveService.save(movie)`가 실행되지 않는다... try-catch 부분을 다시 생각해 봐야 함.
-- [ ]  2022/02/24
-   - GenreService에 중복 방지 메서드 부분 수정
-      - 중복 있으면 오류? ❌
-      - 중복이면 무시하고 save ❌
-   - `@OneToMany`에 `CascadeType.ALL`을 하지 않아서 Moive에 MovieGenre를 넣어서 생성 메서드를 호출하여도 아무도 일도 일어나지 않음
-   - 1~30 번호의 Movie를 검색은 해도 저장되지 않음
-      - genre부분이 이미 테이블에 등록 돼 있는 Moive를 호출할 시에 검색은 되나 저장이 안됨
-         - MovieGenre를 생성할 때 들어가는 Genre가 name값만 있는 Genre여서 Genre를 찾을 수 없었고 때문에 오류가 나서 `movieService.save(moive)`가 이루어지지 않고 `catch`를 처리해버림
-   - `movieService.save(movie)`문제는 해결했는데 MovieGenre에 `genre_id`가 `null`로 들어감
-   - `genreService.save(genre)`에서 중복될 경우 `0L`을 반환했고 밑 코드에서 반환된 값으로 `genre`를  찾아서 `null`값이 들어가게됨.
-   - `genre_id`를 `save`하지 않아도 찾을 수 있게 위에서 `name`으로 생성된 객체를 `genre.getName()`하여 `genreRepository.findByName(genre.getName())`으로 DB 내에 `Genre`를 받아 MovieGenre에 넣어줌.
-      - DB에 이제 값은 매우 잘 들어간다 !!!
-         - 🙄 근데 MovieGenre에 중복되는 부분 왜 이렇게 거슬릴까.. 뭔가 더 좋은 방법이 없을까 고민중
-      - 근데 이 부분에서 `List<Genre>`로 되어서 `findGenre.get(0)`으로 했었는데 이 부분은 `validateDuplicate`메서드 때문에 있음.
-      - `MoiveService`에 있는 `validateDuplicateGenre()`메서드 반환 타입을 수정하자.
-=======
     - 테이블 생성 오류
         - application 다시 보기
         - build.gradle 다시 보기
@@ -117,5 +55,11 @@
     - `@OneToMany`에 `CascadeType.ALL`을 하지 않아서 Moive에 MovieGenre를 넣어서 생성 메서드를 호출하여도 아무도 일도 일어나지 않음
     - 1~30 번호의 Movie를 검색은 해도 저장되지 않음
         - genre부분이 이미 테이블에 등록 돼 있는 Moive를 호출할 시에 검색은 되나 저장이 안됨
-        - genre가 중복되었을 때 저장은 무시하나 마지막까지 실행되도록 수정 요함
->>>>>>> 9d0a180da3e52e13f9dbf51cbba2e12464cc3cb0
+            - MovieGenre를 생성할 때 들어가는 Genre가 name값만 있는 Genre여서 Genre를 찾을 수 없었고 때문에 오류가 나서 `movieService.save(moive)`가 이루어지지 않고 `catch`를 처리해버림
+    - `movieService.save(movie)`문제는 해결했는데 MovieGenre에 `genre_id`가 `null`로 들어감
+    - `genreService.save(genre)`에서 중복될 경우 `0L`을 반환했고 밑 코드에서 반환된 값으로 `genre`를  찾아서 `null`값이 들어가게됨.
+    - `genre_id`를 `save`하지 않아도 찾을 수 있게 위에서 `name`으로 생성된 객체를 `genre.getName()`하여 `genreRepository.findByName(genre.getName())`으로 DB 내에 `Genre`를 받아 MovieGenre에 넣어줌.
+        - DB에 이제 값은 매우 잘 들어간다 !!!
+            - 🙄 근데 MovieGenre에 중복되는 부분 왜 이렇게 거슬릴까.. 뭔가 더 좋은 방법이 없을까 고민중
+        - 근데 이 부분에서 `List<Genre>`로 되어서 `findGenre.get(0)`으로 했었는데 이 부분은 `validateDuplicate`메서드 때문에 있음.
+        - `MoiveService`에 있는 `validateDuplicateGenre()`메서드 반환 타입을 수정하자.
