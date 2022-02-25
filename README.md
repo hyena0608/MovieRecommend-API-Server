@@ -2,17 +2,17 @@
 영화 검색 및 추천 with Spring
 
 
-### `POST`  /api/buildData
+##### `POST`  /api/buildData
 
-- 영화 정보 DB에 넣어주기
+###### - 영화 정보 DB에 넣어주기
 
-### `GET`  /api/search/genre?name=   ``
+##### `GET`  /api/search/genre?name=
 
-- 장르로 영화 검색하기
+##### - 장르로 영화 검색하기
 
-### `GET`  /api/search/movie?name=   `` & content=   ``
+##### `GET`  /api/search/movie?name=  &content=  
 
-- 영화 내용 또는 이름으로 검색하기
+##### - 영화 내용 또는 이름으로 검색하기
 
 ---
 
