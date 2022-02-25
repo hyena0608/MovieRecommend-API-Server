@@ -1,9 +1,12 @@
 package wizard.movierecom.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "movie_genre")
+@Getter
 public class MovieGenre {
 
     @Id @GeneratedValue

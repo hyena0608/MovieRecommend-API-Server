@@ -7,8 +7,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
-#        format_sql: true
+        format_sql: true
+        type:
+          descriptor:
+            sql: trace
