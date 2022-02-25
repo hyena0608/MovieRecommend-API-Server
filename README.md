@@ -2,6 +2,20 @@
 영화 검색 및 추천 with Spring
 
 
+##### `POST`  /api/buildData
+
+###### - 영화 정보 DB에 넣어주기
+
+##### `GET`  /api/search/genre?name=
+
+##### - 장르로 영화 검색하기
+
+##### `GET`  /api/search/movie?name=  &content=  
+
+##### - 영화 내용 또는 이름으로 검색하기
+
+---
+
 - [x]  2022/02/17
     - 테이블 생성 오류
         - application 다시 보기
@@ -48,7 +62,7 @@
     - [양방향 연관관계의 주의점](https://www.notion.so/79556ce77a9e43898e088c13dc3b0ea3)
     - DataFactoryController
         - `genreService.save(genre)`가 중복 방지 메서드로 인해 실패할 경우 `catch`로 가기 때문에 `moiveService.save(movie)`가 실행되지 않는다... try-catch 부분을 다시 생각해 봐야 함.
-- [ ]  2022/02/24
+- [x]  2022/02/24
     - GenreService에 중복 방지 메서드 부분 수정
         - 중복 있으면 오류? ❌
         - 중복이면 무시하고 save ❌
@@ -61,5 +75,10 @@
     - `genre_id`를 `save`하지 않아도 찾을 수 있게 위에서 `name`으로 생성된 객체를 `genre.getName()`하여 `genreRepository.findByName(genre.getName())`으로 DB 내에 `Genre`를 받아 MovieGenre에 넣어줌.
         - DB에 이제 값은 매우 잘 들어간다 !!!
             - 🙄 근데 MovieGenre에 중복되는 부분 왜 이렇게 거슬릴까.. 뭔가 더 좋은 방법이 없을까 고민중
-        - 근데 이 부분에서 `List<Genre>`로 되어서 `findGenre.get(0)`으로 했었는데 이 부분은 `validateDuplicate`메서드 때문에 있음.
-        - `MoiveService`에 있는 `validateDuplicateGenre()`메서드 반환 타입을 수정하자.
+- [x]  2022/02/25
+    - 사용하지 않을 테이블 삭제
+    - 장르명으로 영화 검색 API
+        - JSON 형태로 출력은 했으나 `movieGenre`이 데이터를 받아오지 못했고 또한 `movie`가 중복되어서 나온다.
+        - 🤢
+            - 중복 제거
+            - `movieGenre` 데이터 문제 해결
