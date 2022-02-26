@@ -79,6 +79,68 @@
     - 사용하지 않을 테이블 삭제
     - 장르명으로 영화 검색 API
         - JSON 형태로 출력은 했으나 `movieGenre`이 데이터를 받아오지 못했고 또한 `movie`가 중복되어서 나온다.
-        - 🤢
+        - 1️⃣ 🤢
             - 중복 제거
-            - `movieGenre` 데이터 문제 해결
+            - `movieGenre` 에서 `Genre`가 한 개만 나오고 내부 데이터를 받아오지 않음
+        - 2️⃣ 😁
+            - `패치 조인`으로 한 줄 쿼리
+            - `movieGenre`에서 `Genre`가 나오는데 한 개만 나옴.
+            - 🤢 N + 1 문제가 터짐
+
+            ```java
+            @GetMapping("/api/search/genre")
+                public List<MovieDto> findMovieByGenre(String name) {
+                    List<Movie> movies = movieRepository.findByGenre(name);
+                    List<MovieDto> result = movies.stream()
+                            .map(o -> new MovieDto(o))
+                            .collect(Collectors.toList());
+
+                    return result;
+                }
+
+                @Getter
+                static class MovieDto {
+                    private String title;
+                    private String overview;
+                    private String release_date;
+                    private int runtime;
+                    private float vote_average;
+                    private int vote_count;
+                    private List<MovieGenreDto> movieGenres;
+
+                    public MovieDto(Movie movie) {
+                        title = movie.getTitle();
+                        overview = movie.getOverview();
+                        release_date = movie.getRelease_date();
+                        runtime = movie.getRuntime();
+                        vote_average = movie.getVote_average();
+                        vote_count = movie.getVote_count();
+                        movieGenres = movie.getMovieGenres().stream()
+                                .map(movieGenre -> new MovieGenreDto(movieGenre))
+                                .collect(Collectors.toList());
+                    }
+                }
+
+                @Getter
+                static class MovieGenreDto {
+                    private String genreName;
+
+                    public MovieGenreDto(MovieGenre movieGenre) {
+                        genreName = movieGenre.getGenre().getName();
+                    }
+                }
+            ```
+
+            ```java
+            public List<Movie> findByGenre(String name) {
+                    List<Movie> result = em.createQuery(
+                                    "select m " +
+                                            " from Movie m" +
+                                            " join fetch m.movieGenres mg" +
+                                            " where mg.genre.name like :name", Movie.class
+                            ).setParameter("name", "%" + name + "%")
+                            .getResultList();
+
+                    return result;
+                }
+            ```
