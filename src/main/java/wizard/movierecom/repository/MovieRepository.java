@@ -63,10 +63,11 @@ public class MovieRepository {
 
     public List<Movie> findByGenre(String name) {
         List<Movie> result = em.createQuery(
-                        "select m " +
+                        "select distinct m" +
                                 " from Movie m" +
                                 " join fetch m.movieGenres mg" +
-                                " where mg.genre.name like :name", Movie.class
+                                " join fetch mg.genre g" +
+                                " where g.name like :name", Movie.class
                 ).setParameter("name", "%" + name + "%")
                 .getResultList();
 
